@@ -2,6 +2,7 @@ from st2actions.runners.pythonrunner import Action
 from kafka import SimpleProducer, KafkaClient
 from kafka.util import kafka_bytestring
 
+
 class ProduceMessageAction(Action):
     """
     Action to send messages to Apache Kafka system.
