@@ -1,21 +1,38 @@
-# StackStorm Exchange Incubator
+# Apache Kafka Integration Pack
+This pack allows integration with [Apache Kafka](http://kafka.apache.org/), high-throughput distributed messaging system.
 
-### What is this?
+## Actions
+* `kafka.produce` - Send *message* categorized by *topic* to Kafka *hosts*.
 
-This repository is a very special place where user-submitted packs get reviewed, perfected, approved, and finally transferred to the Exchange.
+## Sensors
 
-If you want to submit your pack, it's simple! **Fork this repo, create a subdirectory with your pack, and open a Pull Request.** We'll take it from here. Even if your pack is work-in-progress, you can still submit it to get advice and early feedback from our engineers! Or ping us [on Slack](https://stackstorm.com/community-signup), which is generally the best place to get advice from the StackStorm Community.
+### KafkaMessageSensor
+Connects to a Kafka broker, subscribing to various topics and dispatches triggers for each new message.
 
-**Pro-tip:** if you've been working on your pack for quite a while already, and want your git history and versioning preserved, add your pack repo as a submodule.
+When receives new data, it emits:
+* trigger: `kafka.new_message`
+* payload:
+  * `topic` - Category from which message was retrieved (string).
+  * `message` - Message. JSON-serialized messages are converted to objects (object|string).
+  * `partition` - Topic partition number message belongs to (integer).
+  * `offset` - Consumer offset for current topic. Position of what has been consumed (integer).
+  * `key` - Message's key, used only for keyed messages (string).
 
-Before you submit a pack, make sure to read the [Create and Contribute a Pack](https://docs.stackstorm.com/reference/packs.html) section of our documentation.
+#### Configuration
+* `hosts` - Default hosts to send `produce` messages to in host:port format.
+            Comma-separated for several hosts. (ex: `localhost:9092`)
+* `client_id` - Client ID to send with each message payload (default: `st2-kafka-producer`).
+* message_sensor:
+  * `hosts` - Kafka hostname(s) to connect in host:port format. Comma-separated for several hosts. (ex: `localhost:9092`)
+  * `topics` - Listen for new messages on these topics, (ex: `['test', 'meetings']`)
+  * `group_id` - Consumer group (default: `st2-sensor-group`)
+  * `client_id` - Client ID to identify application making the request (default: `st2-kafka-consumer`).
 
-Here's N.E.P.T.R. the StackStorm Exchange Governor, giving you a thumbs-up:
-
-![](http://i.imgur.com/3bqVAh0.gif)
-
-## Contributors License Agreement
-
-By contributing you agree that these contributions are your own (or approved by your employer) and
-you grant a full, complete, irrevocable copyright license to all users and developers of the
-project, present and future, pursuant to the license of the project.
+## Examples
+Send message to Kafka queue:
+```sh
+# Publish message to `meetings` topic
+st2 run kafka.produce topic=meetings message='StackStorm meets Apache Kafka'
+# Send JSON-formatted message
+st2 run kafka.produce topic=test message='{"menu": {"id": "file"}}'
+```
