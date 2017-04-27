@@ -25,11 +25,13 @@ class KafkaMessageSensor(Sensor):
 
         self._hosts = message_sensor.get('hosts')
         if not self._hosts:
-            raise ValueError('[KafkaMessageSensor]: "message_sensor.hosts" config value is required!')
+            raise ValueError(
+                '[KafkaMessageSensor]: "message_sensor.hosts" config value is required!')
 
         self._topics = set(message_sensor.get('topics', []))
         if not self._topics:
-            raise ValueError('[KafkaMessageSensor]: "message_sensor.topics" should list at least one topic!')
+            raise ValueError(
+                '[KafkaMessageSensor]: "message_sensor.topics" should list at least one topic!')
 
         # set defaults for empty values
         self._group_id = message_sensor.get('group_id') or self.DEFAULT_GROUP_ID
