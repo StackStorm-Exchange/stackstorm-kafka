@@ -38,3 +38,32 @@
         type: "string"
         default: "testclientID"
         required: true
+
+  gcp_message_sensor:
+    description: "GCP sensor specific settings"
+    type: "object"
+    required: true
+    additionalProperties: true
+    properties:
+      hosts:
+        description: "List of Kafka brokers hosts:port for sensor to connect to"
+        type: "string"
+        default: "172.16.1.10:9092"
+        required: true
+      topics:
+        description: "List of base64 encoed topics for the sensor to subscribe to"
+        type: "array"
+        items:
+          type: "string"
+          default: "test"
+          required: true
+      group_id:
+        description: "The sensors group ID"
+        type: "string"
+        default: "testgroupID"
+        required: true
+      client_id:
+        description: "The sensors client ID"
+        type: "string"
+        default: "testclientID"
+        required: true
