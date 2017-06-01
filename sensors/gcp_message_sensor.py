@@ -8,9 +8,9 @@ class KafkaGCPMessageSensor(Sensor):
     Read multiple topics from Apache Kafka cluster and auto-commit offset (mark tasks as finished).
     If responded topic message is JSON - try to convert it to object for reuse inside st2.
     """
-    TRIGGER = 'kafka.new_message'
-    DEFAULT_GROUP_ID = 'st2-gcp-sensor-group'
-    DEFAULT_CLIENT_ID = 'st2-gcp-kafka-consumer'
+    TRIGGER = 'kafka.new_GCPmessage'
+    DEFAULT_GROUP_ID = 'st2gcpgroup'
+    DEFAULT_CLIENT_ID = 'st2gcpclient'
 
     def __init__(self, sensor_service, config=None):
         """
