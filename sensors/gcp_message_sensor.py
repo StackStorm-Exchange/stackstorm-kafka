@@ -21,7 +21,8 @@ class KafkaGCPMessageSensor(Sensor):
 
         gcp_message_sensor = self._config.get('gcp_message_sensor')
         if not gcp_message_sensor:
-            raise ValueError('[KafkaGCPMessageSensor]: "gcp_message_sensor" config value is required!')
+            raise ValueError(
+                '[KafkaGCPMessageSensor]: "gcp_message_sensor" config value is required!')
 
         self._hosts = gcp_message_sensor.get('hosts')
         if not self._hosts:
@@ -31,7 +32,8 @@ class KafkaGCPMessageSensor(Sensor):
         self._topics = set(gcp_message_sensor.get('topics', []))
         if not self._topics:
             raise ValueError(
-                '[KafkaGCPMessageSensor]: "gcp_message_sensor.topics" should list at least one topic!')
+                '[KafkaGCPMessageSensor]: "gcp_message_sensor.topics" \
+                 should list at least one topic!')
 
         # set defaults for empty values
         self._group_id = gcp_message_sensor.get('group_id') or self.DEFAULT_GROUP_ID
@@ -69,7 +71,8 @@ class KafkaGCPMessageSensor(Sensor):
         self._logger.debug('[KafkaGCPMessageSensor]: Entering into listen mode ...')
 
         for message in self._consumer:
-            message.value['payload']['message'] = message.value['payload']['message'].decode('base64')
+            message.value['payload']['message'] = message.\
+                value['payload']['message'].decode('base64')
             self._logger.debug(
                 "[KafkaGCPMessageSensor]: Received %s:%d:%d: key=%s message=%s" %
                 (message.topic, message.partition,
