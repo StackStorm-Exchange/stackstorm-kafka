@@ -42,7 +42,7 @@
   gcp_message_sensor:
     description: "GCP sensor specific settings"
     type: "object"
-    required: true
+    required: false
     additionalProperties: true
     properties:
       hosts:
