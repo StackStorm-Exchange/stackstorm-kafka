@@ -13,7 +13,9 @@ trigger_types:
           type: string
         message:
           description: "Captured message. JSON-serialized messages are automatically parsed"
-          type: object
+          type:
+            - string
+            - object
         partition:
           description: "Topic partition number message belongs to"
           type: integer
