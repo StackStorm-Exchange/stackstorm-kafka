@@ -42,4 +42,4 @@ class ProduceMessageAction(Action):
         result = producer.send_messages(topic, kafka_bytestring(message))
 
         if result[0]:
-            return result[0].__dict__
+            return result[0]._asdict()

@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.4
+
+- `ProduceResponse` has no `__dict__` attribute. So this version changes the `produce.py` to return the results of the `_as_dict` method instead
+
 ## 0.2.3
 
 - Sensor payload parameter schema for ``KafkaMessageSensor`` and ``KafkaGCPMessageSensor`` sensor
