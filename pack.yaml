@@ -15,3 +15,6 @@ author: StackStorm
 email: support@stackstorm.com
 Contributors:
   - Target Corp., Lukas.Marty@Target.com
+python_versions:
+  - "2"
+  - "3"
