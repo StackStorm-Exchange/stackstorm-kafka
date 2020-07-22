@@ -1,3 +1,4 @@
+import sys
 import json
 from st2reactor.sensor.base import Sensor
 from kafka import KafkaConsumer
@@ -78,8 +79,11 @@ class KafkaGCPMessageSensor(Sensor):
                 (message.topic, message.partition,
                  message.offset, message.key, message.value)
             )
+            topic = message.topic
+            if sys.version_info.major >= 3:
+                topic = topic.decode('utf-8')
             payload = {
-                'topic': message.topic,
+                'topic': topic,
                 'partition': message.partition,
                 'offset': message.offset,
                 'key': message.key,
