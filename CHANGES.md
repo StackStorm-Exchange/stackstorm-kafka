@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.0
+
+* Drop Python 2.7 support
+
 ## 0.2.6
 
 - Convert topic to string in Python 3. Fixes #12
