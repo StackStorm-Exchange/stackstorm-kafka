@@ -1,13 +1,18 @@
+"""
+Kafka Producer Action for stackstorm
+"""
+import json
+
 from st2common.runners.base_action import Action
-from kafka import SimpleProducer, KafkaClient
-from kafka.util import kafka_bytestring
+from kafka import KafkaProducer, KafkaConsumer
 
 
 class ProduceMessageAction(Action):
     """
     Action to send messages to Apache Kafka system.
     """
-    DEFAULT_CLIENT_ID = 'st2-kafka-producer'
+
+    DEFAULT_CLIENT_ID = "st2-kafka-producer"
 
     def run(self, topic, message, hosts=None):
         """
@@ -28,18 +33,27 @@ class ProduceMessageAction(Action):
 
         if hosts:
             _hosts = hosts
-        elif self.config.get('hosts', None):
-            _hosts = self.config['hosts']
+        elif self.config.get("hosts", None):
+            _hosts = self.config["hosts"]
         else:
             raise ValueError("Need to define 'hosts' in either action or in config")
 
         # set default for empty value
-        _client_id = self.config.get('client_id') or self.DEFAULT_CLIENT_ID
+        _client_id = self.config.get("client_id") or self.DEFAULT_CLIENT_ID
 
-        client = KafkaClient(_hosts, client_id=_client_id)
-        client.ensure_topic_exists(topic)
-        producer = SimpleProducer(client)
-        result = producer.send_messages(topic, kafka_bytestring(message))
+        consumer = KafkaConsumer(
+            bootstrap_servers=_hosts.split(","), client_id=_client_id
+        )
+        try:
+            assert topic in consumer.topics()
+        except AssertionError as exc:
+            raise AssertionError(f"{topic} does not exist.") from exc
 
-        if result[0]:
-            return result[0]._asdict()
+        producer = KafkaProducer(
+            bootstrap_servers=_hosts.split(","),
+            client_id=_client_id,
+            value_serializer=lambda m: m.encode("utf-8"),
+        )
+        result = producer.send(topic, message)
+        record_metadata = result.get(timeout=10)
+        return record_metadata

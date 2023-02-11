@@ -1,5 +1,7 @@
 # Changelog
 
+* Fix kafka-python actions for python 3.8. Fixes #15
+
 ## 1.0.0
 
 * Drop Python 2.7 support
