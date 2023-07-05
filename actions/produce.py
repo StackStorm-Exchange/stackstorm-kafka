@@ -53,6 +53,7 @@ class ProduceMessageAction(Action):
             bootstrap_servers=_hosts.split(","),
             client_id=_client_id,
             value_serializer=lambda m: m.encode("utf-8"),
+            max_request_size=10485760,
         )
         result = producer.send(topic, message)
         record_metadata = result.get(timeout=10)
