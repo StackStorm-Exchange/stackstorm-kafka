@@ -55,6 +55,6 @@ class ProduceMessageAction(Action):
             value_serializer=lambda m: m.encode("utf-8"),
             max_request_size=10485760,
         )
-        result = producer.send(topic, message)
-        record_metadata = result.get(timeout=10)
-        return record_metadata
+        future = producer.send(topic, message)
+        record_metadata = future.get(timeout=10)  # TODO: Make this timeout an input param
+        return record_metadata._asdict()

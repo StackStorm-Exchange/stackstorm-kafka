@@ -1,6 +1,8 @@
 # Changelog
 
-* Fix kafka-python actions for python 3.8. Fixes #15
+## 1.1.0
+
+* Update to kafka-python 2.0.2 to support python 3.8. #16 by @murthysrd
 
 ## 1.0.0
 
