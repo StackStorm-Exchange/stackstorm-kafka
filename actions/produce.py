@@ -1,8 +1,6 @@
 """
 Kafka Producer Action for stackstorm
 """
-import json
-
 from st2common.runners.base_action import Action
 from kafka import KafkaProducer, KafkaConsumer
 
