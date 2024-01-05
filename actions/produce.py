@@ -43,7 +43,7 @@ class ProduceMessageAction(Action):
             bootstrap_servers=_hosts.split(","), client_id=_client_id
         )
         if topic not in consumer.topics():
-            raise Exception(f"Topic does not exist: {topic}") from exc
+            raise Exception(f"Topic does not exist: {topic}")
 
         producer = KafkaProducer(
             bootstrap_servers=_hosts.split(","),
