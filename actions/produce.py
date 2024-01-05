@@ -42,10 +42,8 @@ class ProduceMessageAction(Action):
         consumer = KafkaConsumer(
             bootstrap_servers=_hosts.split(","), client_id=_client_id
         )
-        try:
-            assert topic in consumer.topics()
-        except AssertionError as exc:
-            raise AssertionError(f"{topic} does not exist.") from exc
+        if topic not in consumer.topics():
+            raise Exception(f"Topic does not exist: {topic}") from exc
 
         producer = KafkaProducer(
             bootstrap_servers=_hosts.split(","),

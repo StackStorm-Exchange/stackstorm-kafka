@@ -10,7 +10,7 @@ keywords:
   - base64
   - stackdriver
   - google cloud
-version: 1.1.0
+version: 2.0.0
 author: StackStorm
 email: support@stackstorm.com
 Contributors:
