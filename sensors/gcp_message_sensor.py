@@ -57,12 +57,16 @@ class KafkaGCPMessageSensor(Sensor):
         """
         Ensure that topics we're listening to exist.
 
-        Fetching metadata for a non-existent topic will automatically try to create it
-        with the default replication factor and number of partitions (default server config).
-        Otherwise Kafka server is not configured to auto-create topics and partitions.
+        This does not fetch metadata for specific topics, so it will not trigger auto-creation
+        of topics and partitions even if the Kafka server has the default server config that
+        allows such auto-creation.
         """
-        map(self._consumer._client.ensure_topic_exists, self._topics)
-        self._consumer.set_topic_partitions(*self._topics)
+        cluster_topics = self._consumer.topics()
+        missing_topics = [topic for topic in self._topics if topic not in cluster_topics]
+        if missing_topics:
+            raise Exception(f"One or more topics do not exist: {', '.join(missing_topics)}")
+        # topic partitions were already subscribed on KafkaConsumer init
+        # self._consumer.subscribe(topics=self._topics)
 
     def run(self):
         """

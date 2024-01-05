@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.0.0
+
+* Update to kafka-python 2.0.2 to support python 3.8. #16 by @murthysrd
+  This is a major version bump as topics will no longer be auto-created
+  by the sensors or by the produce action even if the Kafka server is
+  configured to auto-create the topics and partitions.
+
 ## 1.0.0
 
 * Drop Python 2.7 support
